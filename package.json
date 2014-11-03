@@ -3,5 +3,6 @@
 ,   "version":  "0.0.1"
 ,   "license": "MIT"
 ,   "dependencies": {
+        "whacko":   "0.17.1"
     }
 }
