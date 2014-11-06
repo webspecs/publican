@@ -5,12 +5,13 @@ var gith = require("gith").create(7002)
 // ,   ie = require("../lib/index-extractor")
 ,   git = require("../lib/git")
 // ,   bs = require("../lib/bikeshed")
+,   cnf = require("../lib/config")
 ,   man = require("../lib/manager")
 ,   rsync = require("../lib/rsync")
 ,   log = require("./log")
 ,   dataDir = jn(__dirname, "../data")
 ,   wantedFile = jn(dataDir, "wanted.json")
-,   conf = man.readConfiguration()
+,   conf = cnf.readConfiguration()
 ;
 
 // XXX
