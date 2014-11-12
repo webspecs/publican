@@ -2,9 +2,7 @@
 var gith = require("gith").create(7002)
 ,   fs = require("fs")
 ,   jn = require("path").join
-// ,   ie = require("../lib/index-extractor")
 ,   git = require("../lib/git")
-// ,   bs = require("../lib/bikeshed")
 ,   cnf = require("../lib/config")
 ,   man = require("../lib/manager")
 ,   rsync = require("../lib/rsync")
