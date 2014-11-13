@@ -15,8 +15,8 @@ var gith = require("gith").create(7002)
 //  it would be worth detecting a deletion of a branch we are interested in
 gith({})
     .on("file:all", function (payload) {
-        // console.log(JSON.stringify(payload, null, 4));
         var branch = payload.branch, repo = payload.repo;
+        log.info("Processing request for " + repo + "#" + branch);
         if (!branch || !repo) return;
         log.info("Hook for " + repo + ", branch " + branch);
         var wanted = JSON.parse(fs.readFileSync(wantedFile, "utf8"));
@@ -30,6 +30,7 @@ gith({})
 function poll () {
     var next = queue.next();
     if (!next) return setInterval(poll, pollInterval);
+    log.info("Found item in queue, processing " + JSON.stringify(next));
     man.processRepository(next, function (err) {
         if (err) log.error(err);
         process.nextTick(poll);
@@ -38,30 +39,30 @@ function poll () {
 poll();
 
 // gith.payload({
-//   "ref": "refs/heads/gh-pages",
-//   "before": "4d2ab4e76d0d405d17d1a0f2b8a6071394e3ab40",
-//   "after": "7700ca29dd050d9adacc0803f866d9b539513535",
+//   "ref": "refs/heads/master",
+//   "before": "73de039b5d3b4938f1517ab5f940476762c66c0d",
+//   "after": "bf85cb313401ff660d09ec937d09c5e9d627f5f5",
 //   "created": false,
 //   "deleted": false,
 //   "forced": false,
 //   "base_ref": null,
-//   "compare": "https://github.com/baxterthehacker/public-repo/compare/4d2ab4e76d0d...7700ca29dd05",
+//   "compare": "https://github.com/webspecs/html-aria/compare/73de039b5d3b...bf85cb313401",
 //   "commits": [
 //     {
-//       "id": "7700ca29dd050d9adacc0803f866d9b539513535",
+//       "id": "bf85cb313401ff660d09ec937d09c5e9d627f5f5",
 //       "distinct": true,
-//       "message": "Trigger pages build",
-//       "timestamp": "2014-10-09T17:10:36-07:00",
-//       "url": "https://github.com/baxterthehacker/public-repo/commit/7700ca29dd050d9adacc0803f866d9b539513535",
+//       "message": "Testing hook",
+//       "timestamp": "2014-11-13T16:50:04+01:00",
+//       "url": "https://github.com/webspecs/html-aria/commit/bf85cb313401ff660d09ec937d09c5e9d627f5f5",
 //       "author": {
-//         "name": "Kyle Daigle",
-//         "email": "kyle.daigle@github.com",
-//         "username": "kdaigle"
+//         "name": "Robin Berjon",
+//         "email": "robin@berjon.com",
+//         "username": "darobin"
 //       },
 //       "committer": {
-//         "name": "Kyle Daigle",
-//         "email": "kyle.daigle@github.com",
-//         "username": "kdaigle"
+//         "name": "Robin Berjon",
+//         "email": "robin@berjon.com",
+//         "username": "darobin"
 //       },
 //       "added": [
 // 
@@ -70,25 +71,25 @@ poll();
 // 
 //       ],
 //       "modified": [
-//         "index.html"
+//         "index.bs"
 //       ]
 //     }
 //   ],
 //   "head_commit": {
-//     "id": "7700ca29dd050d9adacc0803f866d9b539513535",
+//     "id": "bf85cb313401ff660d09ec937d09c5e9d627f5f5",
 //     "distinct": true,
-//     "message": "Trigger pages build",
-//     "timestamp": "2014-10-09T17:10:36-07:00",
-//     "url": "https://github.com/baxterthehacker/public-repo/commit/7700ca29dd050d9adacc0803f866d9b539513535",
+//     "message": "Testing hook",
+//     "timestamp": "2014-11-13T16:50:04+01:00",
+//     "url": "https://github.com/webspecs/html-aria/commit/bf85cb313401ff660d09ec937d09c5e9d627f5f5",
 //     "author": {
-//       "name": "Kyle Daigle",
-//       "email": "kyle.daigle@github.com",
-//       "username": "kdaigle"
+//       "name": "Robin Berjon",
+//       "email": "robin@berjon.com",
+//       "username": "darobin"
 //     },
 //     "committer": {
-//       "name": "Kyle Daigle",
-//       "email": "kyle.daigle@github.com",
-//       "username": "kdaigle"
+//       "name": "Robin Berjon",
+//       "email": "robin@berjon.com",
+//       "username": "darobin"
 //     },
 //     "added": [
 // 
@@ -97,103 +98,114 @@ poll();
 // 
 //     ],
 //     "modified": [
-//       "index.html"
+//       "index.bs"
 //     ]
 //   },
 //   "repository": {
-//     "id": 20000106,
-//     "name": "public-repo",
-//     "full_name": "baxterthehacker/public-repo",
+//     "id": 26213514,
+//     "name": "html-aria",
+//     "full_name": "webspecs/html-aria",
 //     "owner": {
-//       "name": "baxterthehacker",
-//       "email": "baxterthehacker@users.noreply.github.com"
+//       "name": "webspecs",
+//       "email": ""
 //     },
 //     "private": false,
-//     "html_url": "https://github.com/baxterthehacker/public-repo",
-//     "description": "",
+//     "html_url": "https://github.com/webspecs/html-aria",
+//     "description": "Specifies implementer and author stuff for ARIA in HTML",
 //     "fork": false,
-//     "url": "https://github.com/baxterthehacker/public-repo",
-//     "forks_url": "https://api.github.com/repos/baxterthehacker/public-repo/forks",
-//     "keys_url": "https://api.github.com/repos/baxterthehacker/public-repo/keys{/key_id}",
-//     "collaborators_url": "https://api.github.com/repos/baxterthehacker/public-repo/collaborators{/collaborator}",
-//     "teams_url": "https://api.github.com/repos/baxterthehacker/public-repo/teams",
-//     "hooks_url": "https://api.github.com/repos/baxterthehacker/public-repo/hooks",
-//     "issue_events_url": "https://api.github.com/repos/baxterthehacker/public-repo/issues/events{/number}",
-//     "events_url": "https://api.github.com/repos/baxterthehacker/public-repo/events",
-//     "assignees_url": "https://api.github.com/repos/baxterthehacker/public-repo/assignees{/user}",
-//     "branches_url": "https://api.github.com/repos/baxterthehacker/public-repo/branches{/branch}",
-//     "tags_url": "https://api.github.com/repos/baxterthehacker/public-repo/tags",
-//     "blobs_url": "https://api.github.com/repos/baxterthehacker/public-repo/git/blobs{/sha}",
-//     "git_tags_url": "https://api.github.com/repos/baxterthehacker/public-repo/git/tags{/sha}",
-//     "git_refs_url": "https://api.github.com/repos/baxterthehacker/public-repo/git/refs{/sha}",
-//     "trees_url": "https://api.github.com/repos/baxterthehacker/public-repo/git/trees{/sha}",
-//     "statuses_url": "https://api.github.com/repos/baxterthehacker/public-repo/statuses/{sha}",
-//     "languages_url": "https://api.github.com/repos/baxterthehacker/public-repo/languages",
-//     "stargazers_url": "https://api.github.com/repos/baxterthehacker/public-repo/stargazers",
-//     "contributors_url": "https://api.github.com/repos/baxterthehacker/public-repo/contributors",
-//     "subscribers_url": "https://api.github.com/repos/baxterthehacker/public-repo/subscribers",
-//     "subscription_url": "https://api.github.com/repos/baxterthehacker/public-repo/subscription",
-//     "commits_url": "https://api.github.com/repos/baxterthehacker/public-repo/commits{/sha}",
-//     "git_commits_url": "https://api.github.com/repos/baxterthehacker/public-repo/git/commits{/sha}",
-//     "comments_url": "https://api.github.com/repos/baxterthehacker/public-repo/comments{/number}",
-//     "issue_comment_url": "https://api.github.com/repos/baxterthehacker/public-repo/issues/comments/{number}",
-//     "contents_url": "https://api.github.com/repos/baxterthehacker/public-repo/contents/{+path}",
-//     "compare_url": "https://api.github.com/repos/baxterthehacker/public-repo/compare/{base}...{head}",
-//     "merges_url": "https://api.github.com/repos/baxterthehacker/public-repo/merges",
-//     "archive_url": "https://api.github.com/repos/baxterthehacker/public-repo/{archive_format}{/ref}",
-//     "downloads_url": "https://api.github.com/repos/baxterthehacker/public-repo/downloads",
-//     "issues_url": "https://api.github.com/repos/baxterthehacker/public-repo/issues{/number}",
-//     "pulls_url": "https://api.github.com/repos/baxterthehacker/public-repo/pulls{/number}",
-//     "milestones_url": "https://api.github.com/repos/baxterthehacker/public-repo/milestones{/number}",
-//     "notifications_url": "https://api.github.com/repos/baxterthehacker/public-repo/notifications{?since,all,participating}",
-//     "labels_url": "https://api.github.com/repos/baxterthehacker/public-repo/labels{/name}",
-//     "releases_url": "https://api.github.com/repos/baxterthehacker/public-repo/releases{/id}",
-//     "created_at": 1400625583,
-//     "updated_at": "2014-07-25T16:37:51Z",
-//     "pushed_at": 1412899789,
-//     "git_url": "git://github.com/baxterthehacker/public-repo.git",
-//     "ssh_url": "git@github.com:baxterthehacker/public-repo.git",
-//     "clone_url": "https://github.com/baxterthehacker/public-repo.git",
-//     "svn_url": "https://github.com/baxterthehacker/public-repo",
+//     "url": "https://github.com/webspecs/html-aria",
+//     "forks_url": "https://api.github.com/repos/webspecs/html-aria/forks",
+//     "keys_url": "https://api.github.com/repos/webspecs/html-aria/keys{/key_id}",
+//     "collaborators_url": "https://api.github.com/repos/webspecs/html-aria/collaborators{/collaborator}",
+//     "teams_url": "https://api.github.com/repos/webspecs/html-aria/teams",
+//     "hooks_url": "https://api.github.com/repos/webspecs/html-aria/hooks",
+//     "issue_events_url": "https://api.github.com/repos/webspecs/html-aria/issues/events{/number}",
+//     "events_url": "https://api.github.com/repos/webspecs/html-aria/events",
+//     "assignees_url": "https://api.github.com/repos/webspecs/html-aria/assignees{/user}",
+//     "branches_url": "https://api.github.com/repos/webspecs/html-aria/branches{/branch}",
+//     "tags_url": "https://api.github.com/repos/webspecs/html-aria/tags",
+//     "blobs_url": "https://api.github.com/repos/webspecs/html-aria/git/blobs{/sha}",
+//     "git_tags_url": "https://api.github.com/repos/webspecs/html-aria/git/tags{/sha}",
+//     "git_refs_url": "https://api.github.com/repos/webspecs/html-aria/git/refs{/sha}",
+//     "trees_url": "https://api.github.com/repos/webspecs/html-aria/git/trees{/sha}",
+//     "statuses_url": "https://api.github.com/repos/webspecs/html-aria/statuses/{sha}",
+//     "languages_url": "https://api.github.com/repos/webspecs/html-aria/languages",
+//     "stargazers_url": "https://api.github.com/repos/webspecs/html-aria/stargazers",
+//     "contributors_url": "https://api.github.com/repos/webspecs/html-aria/contributors",
+//     "subscribers_url": "https://api.github.com/repos/webspecs/html-aria/subscribers",
+//     "subscription_url": "https://api.github.com/repos/webspecs/html-aria/subscription",
+//     "commits_url": "https://api.github.com/repos/webspecs/html-aria/commits{/sha}",
+//     "git_commits_url": "https://api.github.com/repos/webspecs/html-aria/git/commits{/sha}",
+//     "comments_url": "https://api.github.com/repos/webspecs/html-aria/comments{/number}",
+//     "issue_comment_url": "https://api.github.com/repos/webspecs/html-aria/issues/comments/{number}",
+//     "contents_url": "https://api.github.com/repos/webspecs/html-aria/contents/{+path}",
+//     "compare_url": "https://api.github.com/repos/webspecs/html-aria/compare/{base}...{head}",
+//     "merges_url": "https://api.github.com/repos/webspecs/html-aria/merges",
+//     "archive_url": "https://api.github.com/repos/webspecs/html-aria/{archive_format}{/ref}",
+//     "downloads_url": "https://api.github.com/repos/webspecs/html-aria/downloads",
+//     "issues_url": "https://api.github.com/repos/webspecs/html-aria/issues{/number}",
+//     "pulls_url": "https://api.github.com/repos/webspecs/html-aria/pulls{/number}",
+//     "milestones_url": "https://api.github.com/repos/webspecs/html-aria/milestones{/number}",
+//     "notifications_url": "https://api.github.com/repos/webspecs/html-aria/notifications{?since,all,participating}",
+//     "labels_url": "https://api.github.com/repos/webspecs/html-aria/labels{/name}",
+//     "releases_url": "https://api.github.com/repos/webspecs/html-aria/releases{/id}",
+//     "created_at": 1415181448,
+//     "updated_at": "2014-11-05T09:57:28Z",
+//     "pushed_at": 1415893805,
+//     "git_url": "git://github.com/webspecs/html-aria.git",
+//     "ssh_url": "git@github.com:webspecs/html-aria.git",
+//     "clone_url": "https://github.com/webspecs/html-aria.git",
+//     "svn_url": "https://github.com/webspecs/html-aria",
 //     "homepage": null,
-//     "size": 665,
+//     "size": 144,
 //     "stargazers_count": 0,
 //     "watchers_count": 0,
 //     "language": null,
 //     "has_issues": true,
 //     "has_downloads": true,
 //     "has_wiki": true,
-//     "has_pages": true,
+//     "has_pages": false,
 //     "forks_count": 0,
 //     "mirror_url": null,
-//     "open_issues_count": 24,
+//     "open_issues_count": 0,
 //     "forks": 0,
-//     "open_issues": 24,
+//     "open_issues": 0,
 //     "watchers": 0,
 //     "default_branch": "master",
 //     "stargazers": 0,
-//     "master_branch": "master"
+//     "master_branch": "master",
+//     "organization": "webspecs"
 //   },
 //   "pusher": {
-//     "name": "baxterthehacker",
-//     "email": "baxterthehacker@users.noreply.github.com"
+//     "name": "darobin",
+//     "email": "robin@berjon.com"
+//   },
+//   "organization": {
+//     "login": "webspecs",
+//     "id": 8255462,
+//     "url": "https://api.github.com/orgs/webspecs",
+//     "repos_url": "https://api.github.com/orgs/webspecs/repos",
+//     "events_url": "https://api.github.com/orgs/webspecs/events",
+//     "members_url": "https://api.github.com/orgs/webspecs/members{/member}",
+//     "public_members_url": "https://api.github.com/orgs/webspecs/public_members{/member}",
+//     "avatar_url": "https://avatars.githubusercontent.com/u/8255462?v=3"
 //   },
 //   "sender": {
-//     "login": "baxterthehacker",
-//     "id": 6752317,
-//     "avatar_url": "https://avatars.githubusercontent.com/u/6752317?v=2",
+//     "login": "darobin",
+//     "id": 38491,
+//     "avatar_url": "https://avatars.githubusercontent.com/u/38491?v=3",
 //     "gravatar_id": "",
-//     "url": "https://api.github.com/users/baxterthehacker",
-//     "html_url": "https://github.com/baxterthehacker",
-//     "followers_url": "https://api.github.com/users/baxterthehacker/followers",
-//     "following_url": "https://api.github.com/users/baxterthehacker/following{/other_user}",
-//     "gists_url": "https://api.github.com/users/baxterthehacker/gists{/gist_id}",
-//     "starred_url": "https://api.github.com/users/baxterthehacker/starred{/owner}{/repo}",
-//     "subscriptions_url": "https://api.github.com/users/baxterthehacker/subscriptions",
-//     "organizations_url": "https://api.github.com/users/baxterthehacker/orgs",
-//     "repos_url": "https://api.github.com/users/baxterthehacker/repos",
-//     "events_url": "https://api.github.com/users/baxterthehacker/events{/privacy}",
-//     "received_events_url": "https://api.github.com/users/baxterthehacker/received_events",
+//     "url": "https://api.github.com/users/darobin",
+//     "html_url": "https://github.com/darobin",
+//     "followers_url": "https://api.github.com/users/darobin/followers",
+//     "following_url": "https://api.github.com/users/darobin/following{/other_user}",
+//     "gists_url": "https://api.github.com/users/darobin/gists{/gist_id}",
+//     "starred_url": "https://api.github.com/users/darobin/starred{/owner}{/repo}",
+//     "subscriptions_url": "https://api.github.com/users/darobin/subscriptions",
+//     "organizations_url": "https://api.github.com/users/darobin/orgs",
+//     "repos_url": "https://api.github.com/users/darobin/repos",
+//     "events_url": "https://api.github.com/users/darobin/events{/privacy}",
+//     "received_events_url": "https://api.github.com/users/darobin/received_events",
 //     "type": "User",
 //     "site_admin": false
 //   }
