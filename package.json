@@ -10,5 +10,10 @@
     ,   "fs-extra": "0.12.0"
     ,   "async":    "0.9.0"
     ,   "lock":     "0.1.0"
+    ,   "chalk":    "0.5.1"
+    }
+,   "bin": {
+        "serve-publican":  "bin/server.js"
+    ,   "publican":         "bin/publican.js"
     }
 }

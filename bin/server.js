@@ -1,3 +1,4 @@
+#!/usr/bin/env node
 
 var gith = require("gith").create(7002)
 ,   fs = require("fs")
