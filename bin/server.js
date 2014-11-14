@@ -8,6 +8,7 @@ var gith = require("gith").create(7002)
 ,   queue = require("../lib/queue")
 ,   dataDir = jn(__dirname, "../data")
 ,   wantedFile = jn(dataDir, "wanted.json")
+,   version = require("../package.json").version
 ,   pollInterval = 1000 * 10 // 10 seconds, this is slow, may need to increase later
 ;
 
@@ -37,6 +38,8 @@ function poll () {
     });
 }
 poll();
+
+log.info("Publican/" + version + " up and running.");
 
 // gith.payload({
 //   "ref": "refs/heads/master",
