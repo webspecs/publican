@@ -12,6 +12,7 @@
     ,   "chalk":        "0.5.1"
     ,   "express":      "4.10.2"
     ,   "body-parser":  "1.9.2"
+    ,   "superagent":   "0.21.0"
     }
 ,   "bin": {
         "serve-publican":  "bin/server.js"
