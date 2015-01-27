@@ -50,14 +50,15 @@ app.post("/hook", function (req, res) {
     log.info("Processing request for " + repo + "#" + branch);
     if (!branch || !repo) return ok(res, "Could not find repo or branch in data.");
     log.info("Hook for " + repo + ", branch " + branch);
-    var wanted = JSON.parse(fs.readFileSync(wantedFile, "utf8"));
-    if (!wanted[repo]) return ok(res, "Repository not in the wanted list, maybe add it to the-index?");
-    if (!wanted[repo].branches[branch]) return ok(res, "Branch not in the wanted list, maybe add it to the-index?");
-    var stamp = queue.enqueue(repo, branch)
-    ,   msg = "Queued " + stamp + " for processing."
-    ;
-    
-    return ok(res, msg);
+    fs.readFile(wantedFile, "utf8", function (err, content) {
+        var wanted = JSON.parse(content);
+        if (!wanted[repo]) return ok(res, "Repository not in the wanted list, maybe add it to the-index?");
+        if (!wanted[repo].branches[branch]) return ok(res, "Branch not in the wanted list, maybe add it to the-index?");
+        queue.enqueue(repo, branch, function (err, stamp) {
+            var msg = "Queued " + stamp + " for processing.";
+            ok(res, msg);
+        });
+    });
 });
 
 app.all("*", function (req, res) {
@@ -66,13 +67,13 @@ app.all("*", function (req, res) {
 });
 
 function poll () {
-    var next = queue.next();
-    // console.log("Polling", next);
-    if (!next) return setTimeout(poll, pollInterval);
-    log.info("Found item in queue, processing " + JSON.stringify(next));
-    man.processRepository(next, function (err) {
-        if (err) log.error(err);
-        process.nextTick(poll);
+    queue.next(function (err, next) {
+        if (!next) return setTimeout(poll, pollInterval);
+        log.info("Found item in queue, processing " + JSON.stringify(next));
+        man.processRepository(next, function (err) {
+            if (err) log.error(err);
+            process.nextTick(poll);
+        });
     });
 }
 poll();
