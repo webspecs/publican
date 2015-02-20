@@ -4,19 +4,20 @@
   "license": "MIT",
   "dependencies": {
     "async": "0.9.0",
-    "body-parser": "1.9.2",
+    "body-parser": "1.12.0",
     "chalk": "0.5.1",
     "express": "4.10.2",
-    "fs-extra": "0.12.0",
+    "fs-extra": "^0.16.3",
     "lock": "0.1.0",
     "mkdirp": "0.5.0",
     "phantomjs": "^1.9.15",
     "querystring": "^0.2.0",
-    "respec": "^3.2.40",
+    "respec": "3.2.40",
     "superagent": "0.21.0",
-    "whacko": "0.17.1",
-    "winston": "0.8.3",
-    "winston-mail": "^0.3.0"
+    "tmp": "0.0.24",
+    "whacko": "0.17.3",
+    "winston": "0.9.0",
+    "winston-mail": "^0.3.1"
   },
   "bin": {
     "serve-publican": "bin/server.js",
