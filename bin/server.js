@@ -2,14 +2,13 @@
 
 var express = require("express")
 ,   app = express()
-// ,   gith = require("gith").create(7002)
-,   fs = require("fs")
 ,   jn = require("path").join
 ,   man = require("../lib/manager")
 ,   log = require("../lib/log")
 ,   queue = require("../lib/queue")
-,   dataDir = jn(__dirname, "../data")
-,   wantedFile = jn(dataDir, "wanted.json")
+,   Task = require("../lib/task")
+,   extractTheIndex = require("../lib/tasks/extract-the-index")
+,   context = require("../lib/context")
 ,   version = require("../package.json").version
 ,   pollInterval = 1000 * 10 // 10 seconds, this is slow, may need to increase later
 ;
@@ -50,15 +49,25 @@ app.post("/hook", function (req, res) {
     log.info("Processing request for " + repo + "#" + branch);
     if (!branch || !repo) return ok(res, "Could not find repo or branch in data.");
     log.info("Hook for " + repo + ", branch " + branch);
-    fs.readFile(wantedFile, "utf8", function (err, content) {
-        var wanted = JSON.parse(content);
-        if (!wanted[repo]) return ok(res, "Repository not in the wanted list, maybe add it to the-index?");
-        if (!wanted[repo].branches[branch]) return ok(res, "Branch not in the wanted list, maybe add it to the-index?");
-        queue.enqueue(repo, branch, function (err, stamp) {
-            var msg = "Queued " + stamp + " for processing.";
-            ok(res, msg);
-        });
-    });
+    
+    var ctx = context.getContext();
+    ctx.theIndexPath = jn(ctx.publishDir, "index.html");
+    var script = new Task(ctx);
+    script
+        .add([extractTheIndex])
+        .error(function (err) { log.error(err); })
+        .done(function () {
+            var known = ctx.theIndexRepositories.some(function (it) {
+                return it.repository === repo && it.branch === branch;
+            });
+            if (!known) return ok(res, "Repository or branch not in the wanted list, maybe add them to the-index?");
+            queue.enqueue(repo, branch, function (err, stamp) {
+                var msg = "Queued " + stamp + " for processing.";
+                ok(res, msg);
+            });
+        })
+        .run()
+    ;
 });
 
 app.all("*", function (req, res) {
