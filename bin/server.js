@@ -70,7 +70,7 @@ function poll () {
     queue.next(function (err, next) {
         if (!next) return setTimeout(poll, pollInterval);
         log.info("Found item in queue, processing " + JSON.stringify(next));
-        man.processRepository(next, function (err) {
+        man.runAppropriateTask(next, function (err) {
             if (err) log.error(err);
             process.nextTick(poll);
         });
