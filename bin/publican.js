@@ -11,6 +11,19 @@ function exitOK () {
     process.exit(0);
 }
 
+// XXX
+//  we should add commands here that basically work for any task that makes sense, and can take
+//  arguments that are required by them
+//  this implies moving initSetup from manager to here
+//  Tasks:
+//      - init
+//      - process-index
+//      - process-spec
+//      - purge-all
+//      - rsync-all
+//
+// this tool should check that you have a config available, otherwise things just blow up
+
 function showHelp () {
     var help = [
     ,   ""
