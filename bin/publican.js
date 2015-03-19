@@ -3,14 +3,14 @@
 var chalk = require("chalk")
 ,   cmd = process.argv.splice(2, 1)[0]
 ,   version = require("../package.json").version
-,   man = require("../lib/manager")
+,   Manager = require("../lib/manager")
 ,   nopt = require("nopt")
 ,   pth = require("path")
 ,   knownOpts = {
-                config:     pth
+        config:     pth
     }
 ,   shortHands = {
-                c:      ["--config"]
+        c:      ["--config"]
     }
 ,   options = nopt(knownOpts, shortHands, process.argv, 2)
 ;
@@ -69,6 +69,7 @@ if (cmd === "help") {
 }
 
 // init
+var man = new Manager(options);
 if (cmd === "init") man.initSetup(exitOK);
 else {
     console.error("\n" + chalk.red("Unknown command: " + chalk.bold(cmd)));

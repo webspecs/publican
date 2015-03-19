@@ -2,15 +2,22 @@
 
 var express = require("express")
 ,   app = express()
-,   jn = require("path").join
-,   man = require("../lib/manager")
+,   pth = require("path")
+,   jn = pth.join
+,   Manager = require("../lib/manager")
 ,   log = require("../lib/log")
 ,   queue = require("../lib/queue")
-,   Task = require("../lib/task")
 ,   extractTheIndex = require("../lib/tasks/extract-the-index")
-,   context = require("../lib/context")
 ,   version = require("../package.json").version
 ,   pollInterval = 1000 * 10 // 10 seconds, this is slow, may need to increase later
+,   nopt = require("nopt")
+,   knownOpts = {
+        config:     pth
+    }
+,   shortHands = {
+        c:      ["--config"]
+    }
+,   options = nopt(knownOpts, shortHands, process.argv, 2)
 ;
 
 app.use(require("body-parser").json());
@@ -50,9 +57,10 @@ app.post("/hook", function (req, res) {
     if (!branch || !repo) return ok(res, "Could not find repo or branch in data.");
     log.info("Hook for " + repo + ", branch " + branch);
     
-    var ctx = context.getContext();
+    var man = new Manager(options)
+    ,   ctx = man.getContext();
     ctx.theIndexPath = jn(ctx.publishDir, "index.html");
-    var script = new Task(ctx);
+    var script = man.createTask(ctx);
     script
         .add([extractTheIndex])
         .error(function (err) { log.error(err); })
@@ -79,6 +87,7 @@ function poll () {
     queue.next(function (err, next) {
         if (!next) return setTimeout(poll, pollInterval);
         log.info("Found item in queue, processing " + JSON.stringify(next));
+        var man = new Manager(options);
         man.runAppropriateTask(next, function (err) {
             if (err) log.error(err);
             process.nextTick(poll);
