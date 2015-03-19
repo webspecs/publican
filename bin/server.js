@@ -60,22 +60,17 @@ app.post("/hook", function (req, res) {
     var man = new Manager(options)
     ,   ctx = man.getContext();
     ctx.theIndexPath = jn(ctx.publishDir, "index.html");
-    var script = man.createTask(ctx);
-    script
-        .add([extractTheIndex])
-        .error(function (err) { log.error(err); })
-        .done(function () {
-            var known = ctx.theIndexRepositories.some(function (it) {
-                return it.repository === repo && it.branch === branch;
-            });
-            if (!known) return ok(res, "Repository or branch not in the wanted list, maybe add them to the-index?");
-            queue.enqueue(repo, branch, function (err, stamp) {
-                var msg = "Queued " + stamp + " for processing.";
-                ok(res, msg);
-            });
-        })
-        .run()
-    ;
+    man.runTask(extractTheIndex, ctx, function (err) {
+        if (err) return log.error(err);
+        var known = ctx.theIndexRepositories.some(function (it) {
+            return it.repository === repo && it.branch === branch;
+        });
+        if (!known) return ok(res, "Repository or branch not in the wanted list, maybe add them to the-index?");
+        queue.enqueue(repo, branch, function (err, stamp) {
+            var msg = "Queued " + stamp + " for processing.";
+            ok(res, msg);
+        });
+    });
 });
 
 app.all("*", function (req, res) {
