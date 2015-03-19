@@ -18,6 +18,12 @@ var express = require("express")
     }
 ,   options = nopt(knownOpts, shortHands, process.argv, 2)
 ,   man = new Manager(options)
+,   specialRepos = [
+        { repository: "webspecs/the-index", branch: "master" }
+    ,   { repository: "webspecs/bikeshed",  branch: "webspecs" }
+    ,   { repository: "webspecs/assets",    branch: "master" }
+    ,   { repository: "webspecs/docs",      branch: "master" }
+    ]
 ;
 
 app.use(require("body-parser").json());
@@ -61,7 +67,7 @@ app.post("/hook", function (req, res) {
     ctx.theIndexPath = jn(ctx.publishDir, "index.html");
     man.runTask(extractTheIndex, ctx, function (err) {
         if (err) return man.log.error(err);
-        var known = ctx.theIndexRepositories.some(function (it) {
+        var known = ctx.theIndexRepositories.concat(specialRepos).some(function (it) {
             return it.repository === repo && it.branch === branch;
         });
         if (!known) return ok(res, "Repository or branch not in the wanted list, maybe add them to the-index?");
