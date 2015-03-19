@@ -4,6 +4,15 @@ var chalk = require("chalk")
 ,   cmd = process.argv.splice(2, 1)[0]
 ,   version = require("../package.json").version
 ,   man = require("../lib/manager")
+,   nopt = require("nopt")
+,   pth = require("path")
+,   knownOpts = {
+                config:     pth
+    }
+,   shortHands = {
+                c:      ["--config"]
+    }
+,   options = nopt(knownOpts, shortHands, process.argv, 2)
 ;
 
 // helpers
