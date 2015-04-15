@@ -1,0 +1,20 @@
+{
+    "rsyncRemote":  "ubuntu@specs.production.wpdn"
+,   "rsyncPath":    "/srv/webplatform/specs/"
+,   "python":       "python2"
+,   "logFile":      "logs/all.log"
+,   "email":        {
+        "to":       "robin@berjon.com"
+    ,   "from":     "publican-noreply@webplatform.org"
+    ,   "host":     "mail.messagingengine.com"
+    ,   "port":     465
+    ,   "username": "robin@berjon.com"
+    ,   "password": "XXXX not the real thing, will not work. Should be replaced by a login that can email from here."
+    ,   "ssl":      true
+    ,   "tls":      false
+    ,   "level":    "error"
+    ,   "handleExceptions": true
+    }
+,   "purgeAllURL":  "https://api.fastly.com/service/not_the_real_thing/purge_all"
+,   "purgeAllKey":  "not_the_real_thing"
+}

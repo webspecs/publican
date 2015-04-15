@@ -4,8 +4,6 @@
 # See also:
 #   * https://github.com/nodesource/docker-node/blob/master/ubuntu/trusty/node/0.10.36/Dockerfile
 
-MAINTAINER renoirb 'https://github.com/renoirb'
-
 FROM nodesource/trusty:0.10.36
 
 RUN mkdir -p /srv/webplatform/specs/queue
@@ -25,8 +23,10 @@ ADD package.json /tmp/package.json
 RUN cd /tmp && npm install
 RUN cp -a /tmp/node_modules /srv/webplatform/specs
 
+EXPOSE 7002
+
 USER nonroot
 WORKDIR /srv/webplatform/specs
 
 ENTRYPOINT ["/bin/bash", "/srv/webplatform/specs/bin/run.sh"]
-
+CMD ["node_modules/forever/bin/forever", "--fifo", "logs", "0"]
