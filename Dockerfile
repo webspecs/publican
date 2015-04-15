@@ -29,4 +29,4 @@ USER nonroot
 WORKDIR /srv/webplatform/specs
 
 ENTRYPOINT ["/bin/bash", "/srv/webplatform/specs/bin/run.sh"]
-CMD ["node_modules/forever/bin/forever", "--fifo", "logs", "0"]
+#CMD ["node_modules/forever/bin/forever", "--fifo", "logs", "0"]
