@@ -10,7 +10,7 @@ If you have [Docker installed](https://docs.docker.com/installation/) and runnin
 
 ```bash
 docker pull webspecs/publican
-docker run -it --rm -p 7002:7002 webspecs/publican
+docker run -it --rm -p 7002:7002 webspecs/publican bin/run.sh
 ```
 
 If you want to run with your own customizations, you’d have to do also have [**Docker Compose** installed](https://docs.docker.com/compose/install/) and do the following.
