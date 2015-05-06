@@ -3,9 +3,9 @@ SHELL := bash
 default: run
 
 deps:
-		mkdir -p bikeshed
 		git clone -b webspecs https://github.com/webspecs/bikeshed.git bikeshed
 		pip install --user --editable bikeshed
+		npm install
 
 docker-build:
 		docker build -t webspecs/publican .
