@@ -1,5 +1,5 @@
 {
-    "rsyncRemote":  "ubuntu@specs.production.wpdn"
+    "bikeshed":     "/opt/bikeshed/bikeshed.py"
 ,   "rsyncPath":    "/srv/webplatform/specs/"
 ,   "python":       "python2"
 ,   "logFile":      "logs/all.log"

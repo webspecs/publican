@@ -26,9 +26,9 @@ If you changed project source, you’ll need to build another docker container.
 The following takes into account that you can run `docker` commands.
 
 ```bash
-git checkout task-based
-make build
-make
+make clone-bikeshed
+make docker-build
+make docker-run
 ```
 
 Which extends into something similar to:
@@ -36,6 +36,10 @@ Which extends into something similar to:
 ```
 docker run -it --rm -v /Users/renoirb/workspaces/webplatform/service-publican/repo/data:/srv/webplatform/specs/data -p 8002:7002 webspecs/publican bin/run.sh
 ```
+
+... notice that the `-v /full/path/host:/full/path/container` option requires FULL path in both sides of the column
+
+... notice that the `-v /full/path/host:/full/path/container` option requires FULL path in both sides of the column
 
 Refer to the appropriate documentation if you want to [install](https://docs.docker.com/installation/#installation) and run this project from a Docker container.
 
