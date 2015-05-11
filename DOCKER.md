@@ -18,11 +18,14 @@ Follow the instructions in **Run using _Docker Compose_** in [the registry descr
 
 ### Build Docker container
 
-When we call `docker pull webspecs/publican:latest`, its either calling a last successful Docker build command that has the `-t webspecs/publican`.
+When we call `docker pull webspecs/publican:latest`, its either calling a last successful Docker build command that has the `-t webspecs/publican`
+or its asking to get the latest version from the Docker hub.
 
 In order to deploy, we need to have an image to run, that’s why you have to build one.
 
 To build a **webspecs/publican** container, you need to use the publican repository.
+
+Once a build is successful you can push it to [Push Docker container to Docker Hub registry](#Push Docker container to Docker Hub registry).
 
 Once you have a clone of publican, get the dependencies;
 
