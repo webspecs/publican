@@ -38,7 +38,7 @@ Run the container
 
     make docker-run
 
-If you review what’s in the [Makefile][./Makefile], you’ll see that it basicall expands to something like this;
+If you review what’s in the [Makefile](./Makefile), you’ll see that it basicall expands to something like this;
 
     docker run -it --rm -p 7002:7002 \
            -v /Users/renoirb/workspaces/webplatform/service-publican/repo/data:/srv/webplatform/specs/data \
@@ -52,7 +52,6 @@ Which means you could get into a running container shell if you need to.
 
 That’s what the `make docker-bash` do.
 
-j
 Refer to the appropriate documentation if you want to [install](https://docs.docker.com/installation/#installation) and run this project from a Docker container.
 
 
