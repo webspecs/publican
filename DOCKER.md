@@ -9,8 +9,8 @@ The set of tools used to automate publishing in the WebSpecs project
 If you have [Docker installed](https://docs.docker.com/installation/) and running, you can run it in a few commands.
 
 ```bash
-docker pull webspecs/publican
-docker run -it --rm -p 7002:7002 webspecs/publican bin/run.sh
+docker pull webspecs/publican:latest
+docker run -it --rm -p 7002:7002 -v "$(pwd)/data":/srv/webplatform/specs/data -v "$(pwd)/spec-data":/opt/bikeshed/bikeshed/spec-data webspecs/publican:latest bin/run.sh
 ```
 
 If you want to run with your own customizations, you’d have to do also have [**Docker Compose** installed](https://docs.docker.com/compose/install/) and do the following.
@@ -34,24 +34,48 @@ make docker-run
 Which extends into something similar to:
 
 ```
-docker run -it --rm -v /Users/renoirb/workspaces/webplatform/service-publican/repo/data:/srv/webplatform/specs/data -p 8002:7002 webspecs/publican bin/run.sh
+docker run -it --rm -p 7002:7002 \
+           -v /Users/renoirb/workspaces/webplatform/service-publican/repo/data:/srv/webplatform/specs/data \
+           -v /Users/renoirb/workspaces/webplatform/service-publican/repo/spec-data:/opt/bikeshed/bikeshed/spec-data \
+           webspecs/publican:latest bin/run.sh
 ```
 
 ... notice that the `-v /full/path/host:/full/path/container` option requires FULL path in both sides of the column
 
-... notice that the `-v /full/path/host:/full/path/container` option requires FULL path in both sides of the column
 
 Refer to the appropriate documentation if you want to [install](https://docs.docker.com/installation/#installation) and run this project from a Docker container.
+
+
+## Run an instance locally
+
+Run a container, and send a hook call
+
+        make docker-run
+
+On another terminal tab, send a hook;
+
+        curl -H "Content-Type: application/json" -XPOST localhost:7002/hook -d '{"base_ref":"master","repository":{"name":"assets","owner":{"name":"webspecs"}}}'
+
+
+you should see something like;
+
+        {"ok":true,"details":"Queued 1431380611165-28770219 for processing."}
+
+And in the container, you’d see;
+
+![publican-run-hook](https://cloud.githubusercontent.com/assets/296940/7575805/f18cb1d2-f805-11e4-8ec3-dba68dae7785.png)
 
 
 
 ## Enter the container shell
 
-This is useful to understand what’s happening
+You can initialize an empty workspace using `publican.js init`, it’ll write in `data/` that should already be mounted through the `Makefile`.
 
-```bash
-make bash
-```
+Its also useful to understand what’s happening behind the scenes.
+
+        make docker-bash
+
+![publican-init](https://cloud.githubusercontent.com/assets/296940/7575777/b5a76176-f805-11e4-99e7-3a7c58dd304a.png)
 
 
 
