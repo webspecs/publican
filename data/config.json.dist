@@ -1,0 +1,18 @@
+{
+    "bikeshed":     "/opt/bikeshed/bikeshed.py"
+,   "rsyncPath":    "/srv/webapps/publican/"
+,   "python":       "python2"
+,   "logFile":      "logs/all.log"
+,   "email":        {
+        "to":       "team-webplatform-systems@w3.org"
+    ,   "from":     "publican-noreply@webplatform.org"
+    ,   "host":     "localhost"
+    ,   "password": "XXXX not the real thing, will not work. Should be replaced by a login that can email from here."
+    ,   "ssl":      true
+    ,   "tls":      false
+    ,   "level":    "error"
+    ,   "handleExceptions": true
+    }
+,   "purgeAllURL":  "https://api.fastly.com/service/not_the_real_thing/purge_all"
+,   "purgeAllKey":  "not_the_real_thing"
+}
