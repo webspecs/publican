@@ -8,8 +8,10 @@ FROM nodesource/trusty:0.10.36
 
 MAINTAINER Renoir Boulanger <renoir@w3.org>
 
+ENV DEBIAN_FRONTEND=noninteractive
+
 # Dependencies: Bikeshed, PhantomJS, Bikshed’s lxml
-RUN apt-get update && \
+RUN apt-get update && apt-get -y upgrade && \
     apt-get install -yqq git python2.7 python-dev python-pip libxslt1-dev libxml2-dev zlib1g-dev && \
     apt-get install -yqq libfontconfig1 libfreetype6 curl && \
     apt-get autoremove -yqq --purge && \
@@ -19,31 +21,32 @@ RUN apt-get update && \
 # REMINDER: Make sure you run `make clone-bikeshed`, we prefer to keep a copy locally outside
 # of the data volume. Otherwise it would make problems saying that bikeshed clone is not in the
 # same filesystem.
-COPY . /srv/webplatform/specs/
+COPY . /srv/webapps/publican/
 
 # Make sure we have a "non root" user and
 # delete any local workbench data/ directory
-RUN /usr/sbin/useradd --system -G sudo --home-dir /srv/webplatform/specs --shell /bin/bash app-user && \
+RUN /usr/sbin/groupadd --system --gid 990 webapps && \
+    /usr/sbin/useradd --system --gid 990 --uid 990 -G sudo --home-dir /srv/webapps --shell /bin/bash webapps && \
     sed -i '/^%sudo/d' /etc/sudoers && \
     echo '%sudo ALL=NOPASSWD: ALL' >> /etc/sudoers && \
-    mv /srv/webplatform/specs/bikeshed /opt && \
+    mv /srv/webapps/publican/bikeshed /opt && \
     rm -rf data && \
     mkdir -p data/temp && \
     rm -rf Dockerfile Makefile .git .gitignore DOCKER.md && \
-    chown -R app-user:www-data /srv/webplatform/specs && \
-    chown -R app-user:app-user /opt/bikeshed
+    chown -R webapps:webapps /srv/webapps/publican && \
+    chown -R webapps:webapps /opt/bikeshed
 
-# Switch from root to app-user user
+# Switch from root to webapps system user
 # It **HAS to be** the SAME uid/gid as the owner on the host from which we’ll use as volume
-USER app-user
+USER webapps
 
 # Where the session will start from
-WORKDIR /srv/webplatform/specs
+WORKDIR /srv/webapps/publican
 
 # Environment variables
-ENV PATH /srv/webplatform/specs/node_modules/.bin:/srv/webplatform/specs/bin:/srv/webplatform/specs/.local/bin:$PATH
-ENV HOME /srv/webplatform/specs
-ENV TMPDIR /srv/webplatform/specs/data/temp
+ENV PATH /srv/webapps/publican/node_modules/.bin:/srv/webapps/publican/bin:/srv/webapps/publican/.local/bin:$PATH
+ENV HOME /srv/webapps/publican
+ENV TMPDIR /srv/webapps/publican/data/temp
 ENV NODE_ENV production
 ENV GIT_DISCOVERY_ACROSS_FILESYSTEM true
 
@@ -58,7 +61,7 @@ EXPOSE 7002
 ENTRYPOINT ["/bin/bash"]
 
 # Note leftover: Ideally, it should exclusively run
-#ENTRYPOINT ["/bin/bash", "/srv/webplatform/specs/bin/run.sh"]
+#ENTRYPOINT ["/bin/bash", "/srv/webapps/publican/bin/run.sh"]
 
 # Note leftover: What it ends up doing
 #CMD ["node_modules/forever/bin/forever", "--fifo", "logs", "0"]

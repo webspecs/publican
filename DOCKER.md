@@ -44,7 +44,7 @@ Run the container
 If you review what’s in the [Makefile](./Makefile), you’ll see that it basicall expands to something like this;
 
     docker run -it --rm -p 7002:7002 \
-           -v /Users/renoirb/workspaces/webplatform/service-publican/repo/data:/srv/webplatform/specs/data \
+           -v /Users/renoirb/workspaces/webplatform/service-publican/repo/data:/srv/webapps/publican/data \
            -v /Users/renoirb/workspaces/webplatform/service-publican/repo/spec-data:/opt/bikeshed/bikeshed/spec-data \
            webspecs/publican:latest bin/run.sh
 

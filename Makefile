@@ -18,8 +18,8 @@ docker-build:
 		docker build -t webspecs/publican .
 
 docker-bash:
-		docker run -it --rm -v "$(CURDIR)/data":/srv/webplatform/specs/data -v "$(CURDIR)/spec-data":/opt/bikeshed/bikeshed/spec-data -p 7002:7002 webspecs/publican:latest
+		docker run -it --rm -v "$(CURDIR)/data":/srv/webapps/publican/data -v "$(CURDIR)/spec-data":/opt/bikeshed/bikeshed/spec-data -p 7002:7002 webspecs/publican:latest
 
 docker-run:
-		docker run -it --rm -v "$(CURDIR)/data":/srv/webplatform/specs/data  -v "$(CURDIR)/spec-data":/opt/bikeshed/bikeshed/spec-data -p 7002:7002 webspecs/publican:latest bin/run.sh
+		docker run -it --rm -v "$(CURDIR)/data":/srv/webapps/publican/data  -v "$(CURDIR)/spec-data":/opt/bikeshed/bikeshed/spec-data -p 7002:7002 webspecs/publican:latest bin/run.sh
 

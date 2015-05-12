@@ -1,6 +1,6 @@
 #!/bin/bash
 
-export RUNDIR="/srv/webplatform/specs"
+export RUNDIR="/srv/webapps/publican"
 
 cd $RUNDIR
 
