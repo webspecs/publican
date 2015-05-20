@@ -15,7 +15,7 @@
     "phantomjs": "1.9.15",
     "querystring": "^0.2.0",
     "respec": "3.2.40",
-    "superagent": "1.1.0",
+    "request": "2.42.0",
     "tmp": "0.0.25",
     "whacko": "0.17.4",
     "winston": "0.9.0",
